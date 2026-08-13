@@ -23,4 +23,7 @@ object DatabaseModule {
 
     @Provides
     fun provideBookmarkDao(db: AppDatabase) = db.bookmarkDao()
+
+    @Provides
+    fun provideNoteDao(db: AppDatabase) = db.noteDao()
 }

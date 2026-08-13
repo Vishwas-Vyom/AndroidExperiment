@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.BookmarkBorder
+import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Weekend
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -31,6 +33,9 @@ import me.vishwas.androidexperimental.feature.news.presentation.bookmarks.Bookma
 import me.vishwas.androidexperimental.feature.news.presentation.detail.DetailScreen
 import me.vishwas.androidexperimental.feature.news.presentation.home.HomeScreen
 import me.vishwas.androidexperimental.feature.news.presentation.search.SearchScreen
+import me.vishwas.androidexperimental.feature.notes.presentation.NoteDetailScreen
+import me.vishwas.androidexperimental.feature.notes.presentation.NotesListScreen
+import me.vishwas.androidexperimental.feature.rooms.presentation.RoomsScreen
 import me.vishwas.androidexperimental.navigation.Screen
 
 private data class NavItem(
@@ -44,6 +49,8 @@ private val navItems = listOf(
     NavItem(Screen.Home, "Home", Icons.Rounded.Home, Icons.Rounded.Home),
     NavItem(Screen.Search, "Search", Icons.Rounded.Search, Icons.Rounded.Search),
     NavItem(Screen.Bookmarks, "Saved", Icons.Rounded.Bookmark, Icons.Rounded.BookmarkBorder),
+    NavItem(Screen.Notes, "Notes", Icons.Rounded.EditNote, Icons.Rounded.EditNote),
+    NavItem(Screen.Rooms, "Rooms", Icons.Rounded.Weekend, Icons.Rounded.Weekend),
 )
 
 @OptIn(ExperimentalMaterial3AdaptiveNavigationSuiteApi::class)
@@ -52,7 +59,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute by remember { derivedStateOf { backStackEntry?.destination?.route } }
-    val isDetailScreen by remember { derivedStateOf { currentRoute == Screen.Detail.route } }
+    val isDetailScreen by remember {
+        derivedStateOf { currentRoute == Screen.Detail.route || currentRoute == Screen.NoteDetail.route }
+    }
 
     val adaptiveInfo = currentWindowAdaptiveInfo()
     val defaultLayoutType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo)
@@ -109,6 +118,15 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             }
             composable(Screen.Detail.route) {
                 DetailScreen(onNavigateBack = { navController.popBackStack() })
+            }
+            composable(Screen.Notes.route) {
+                NotesListScreen(onNavigateToDetail = { navController.navigate(Screen.NoteDetail.route) })
+            }
+            composable(Screen.NoteDetail.route) {
+                NoteDetailScreen(onNavigateBack = { navController.popBackStack() })
+            }
+            composable(Screen.Rooms.route) {
+                RoomsScreen()
             }
         }
     }

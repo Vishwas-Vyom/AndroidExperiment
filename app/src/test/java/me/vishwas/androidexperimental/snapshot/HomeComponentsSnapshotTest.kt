@@ -1,12 +1,9 @@
 package me.vishwas.androidexperimental.snapshot
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
-import androidx.test.ext.junit4.runners.AndroidJUnit4
-import io.github.takahirom.roborazzi.captureRoboImage
-import kotlinx.collections.immutable.persistentListOf
+import androidx.test.runner.AndroidJUnit4
+import com.github.takahirom.roborazzi.captureRoboImage
 import me.vishwas.androidexperimental.feature.news.domain.model.NewsCategory
 import me.vishwas.androidexperimental.feature.news.presentation.home.CategoryChipsRow
 import me.vishwas.androidexperimental.feature.news.presentation.home.ErrorState

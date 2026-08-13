@@ -2,8 +2,8 @@ package me.vishwas.androidexperimental.snapshot
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
-import androidx.test.ext.junit4.runners.AndroidJUnit4
-import io.github.takahirom.roborazzi.captureRoboImage
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.captureRoboImage
 import kotlinx.collections.immutable.toImmutableList
 import me.vishwas.androidexperimental.feature.news.presentation.search.SearchContent
 import me.vishwas.androidexperimental.feature.news.presentation.search.SearchUiState
