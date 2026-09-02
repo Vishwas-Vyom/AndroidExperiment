@@ -2,6 +2,7 @@ package me.vishwas.androidexperimental
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.BlurOn
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material.icons.rounded.Crop
@@ -35,6 +36,7 @@ import me.vishwas.androidexperimental.feature.news.presentation.bookmarks.Bookma
 import me.vishwas.androidexperimental.feature.news.presentation.detail.DetailScreen
 import me.vishwas.androidexperimental.feature.news.presentation.home.HomeScreen
 import me.vishwas.androidexperimental.feature.news.presentation.search.SearchScreen
+import me.vishwas.androidexperimental.feature.blur.presentation.BlurLabScreen
 import me.vishwas.androidexperimental.feature.controls.presentation.ControlsScreen
 import me.vishwas.androidexperimental.feature.notes.presentation.NoteDetailScreen
 import me.vishwas.androidexperimental.feature.notes.presentation.NotesListScreen
@@ -57,6 +59,7 @@ private val navItems = listOf(
     NavItem(Screen.Rooms, "Rooms", Icons.Rounded.Weekend, Icons.Rounded.Weekend),
     NavItem(Screen.Controls, "Controls", Icons.Rounded.Devices, Icons.Rounded.Devices),
     NavItem(Screen.Viewport, "Viewport", Icons.Rounded.Crop, Icons.Rounded.Crop),
+    NavItem(Screen.BlurLab, "Blur", Icons.Rounded.BlurOn, Icons.Rounded.BlurOn),
 )
 
 @OptIn(ExperimentalMaterial3AdaptiveNavigationSuiteApi::class)
@@ -139,6 +142,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             }
             composable(Screen.Viewport.route) {
                 ViewportImageScreen()
+            }
+            composable(Screen.BlurLab.route) {
+                BlurLabScreen()
             }
         }
     }
