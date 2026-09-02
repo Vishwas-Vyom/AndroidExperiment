@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import kotlin.math.abs
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 enum class CarouselOrientation { Horizontal, Vertical }
@@ -49,6 +50,7 @@ fun <T> CardCarousel(
 ) {
     var deck by remember(items) { mutableStateOf(items) }
     val offsetMain = remember { Animatable(0f) }
+    val frontAlpha = remember { Animatable(1f) }
     val scope = rememberCoroutineScope()
     val currentOnFrontItemChanged by rememberUpdatedState(onFrontItemChanged)
 
@@ -119,6 +121,7 @@ fun <T> CardCarousel(
                     .width(cardWidth)
                     .height(cardHeight)
                     .graphicsLayer {
+                        alpha = frontAlpha.value
                         if (isVertical) translationY = offsetMain.value else translationX = offsetMain.value
                     }
                     .pointerInput(orientation, front) {
@@ -134,9 +137,13 @@ fun <T> CardCarousel(
                                     if (abs(offsetMain.value) > thresholdPx) {
                                         val direction = if (offsetMain.value > 0) 1f else -1f
                                         val target = direction * exitDistancePx
-                                        offsetMain.animateTo(target, animationSpec = tween(220))
+                                        coroutineScope {
+                                            launch { offsetMain.animateTo(target, animationSpec = tween(280)) }
+                                            launch { frontAlpha.animateTo(0f, animationSpec = tween(280)) }
+                                        }
                                         advanceDeck()
                                         offsetMain.snapTo(0f)
+                                        frontAlpha.snapTo(1f)
                                     } else {
                                         offsetMain.animateTo(0f, animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy))
                                     }

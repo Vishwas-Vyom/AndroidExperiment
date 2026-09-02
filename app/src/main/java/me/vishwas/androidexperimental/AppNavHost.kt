@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.BookmarkBorder
+import androidx.compose.material.icons.rounded.Crop
+import androidx.compose.material.icons.rounded.Devices
 import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Search
@@ -33,9 +35,11 @@ import me.vishwas.androidexperimental.feature.news.presentation.bookmarks.Bookma
 import me.vishwas.androidexperimental.feature.news.presentation.detail.DetailScreen
 import me.vishwas.androidexperimental.feature.news.presentation.home.HomeScreen
 import me.vishwas.androidexperimental.feature.news.presentation.search.SearchScreen
+import me.vishwas.androidexperimental.feature.controls.presentation.ControlsScreen
 import me.vishwas.androidexperimental.feature.notes.presentation.NoteDetailScreen
 import me.vishwas.androidexperimental.feature.notes.presentation.NotesListScreen
 import me.vishwas.androidexperimental.feature.rooms.presentation.RoomsScreen
+import me.vishwas.androidexperimental.feature.viewport.presentation.ViewportImageScreen
 import me.vishwas.androidexperimental.navigation.Screen
 
 private data class NavItem(
@@ -51,6 +55,8 @@ private val navItems = listOf(
     NavItem(Screen.Bookmarks, "Saved", Icons.Rounded.Bookmark, Icons.Rounded.BookmarkBorder),
     NavItem(Screen.Notes, "Notes", Icons.Rounded.EditNote, Icons.Rounded.EditNote),
     NavItem(Screen.Rooms, "Rooms", Icons.Rounded.Weekend, Icons.Rounded.Weekend),
+    NavItem(Screen.Controls, "Controls", Icons.Rounded.Devices, Icons.Rounded.Devices),
+    NavItem(Screen.Viewport, "Viewport", Icons.Rounded.Crop, Icons.Rounded.Crop),
 )
 
 @OptIn(ExperimentalMaterial3AdaptiveNavigationSuiteApi::class)
@@ -127,6 +133,12 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             }
             composable(Screen.Rooms.route) {
                 RoomsScreen()
+            }
+            composable(Screen.Controls.route) {
+                ControlsScreen()
+            }
+            composable(Screen.Viewport.route) {
+                ViewportImageScreen()
             }
         }
     }

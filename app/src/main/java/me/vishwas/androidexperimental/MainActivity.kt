@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AndroidExperimentalTheme {
+            AndroidExperimentalTheme(darkTheme = false) {
                 AppNavHost(modifier = Modifier.fillMaxSize())
             }
 
