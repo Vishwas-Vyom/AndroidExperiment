@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.vishwas.androidexperimental.ui.component.FrostedBottomSheetHost
 import me.vishwas.androidexperimental.ui.theme.AndroidExperimentalTheme
 
 private val ContentMaxWidth = 840.dp
@@ -25,41 +26,61 @@ private val ContentMaxWidth = 840.dp
  *
  * The slider sits outside the list rather than in it, because comparing techniques means changing
  * the radius while looking at a section further down.
+ *
+ * The frosted sheet wraps the whole screen rather than sitting in its own card: it blurs what is
+ * behind it, so the screen has to be its sibling. Insets are applied inside the host so the sheet
+ * can still reach the bottom edge.
  */
 @Composable
 fun BlurLabContent(
     radius: Dp,
     onRadiusChange: (Dp) -> Unit,
+    sheetVisible: Boolean,
+    onSheetVisibleChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .safeDrawingPadding(),
-        contentAlignment = Alignment.TopCenter,
+    FrostedBottomSheetHost(
+        visible = sheetVisible,
+        onDismissRequest = { onSheetVisibleChange(false) },
+        modifier = modifier,
+        blurRadius = radius,
+        sheetContent = { FrostedSheetDemoContent(onClose = { onSheetVisibleChange(false) }) },
     ) {
-        Column(modifier = Modifier.widthIn(max = ContentMaxWidth)) {
-            BlurRadiusSlider(
-                radius = radius,
-                onRadiusChange = onRadiusChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-            )
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                item(key = "capabilities") { BlurCapabilityBanner(Modifier.fillMaxWidth()) }
-                item(key = "content") { ContentBlurSection(radius, Modifier.fillMaxWidth()) }
-                item(key = "downscale") { DownscaleBlurSection(radius, Modifier.fillMaxWidth()) }
-                item(key = "progressive") { ProgressiveBlurSection(radius, Modifier.fillMaxWidth()) }
-                item(key = "agsl") { AgslProgressiveBlurSection(radius, Modifier.fillMaxWidth()) }
-                item(key = "masked") { MaskedBlurSection(radius, Modifier.fillMaxWidth()) }
-                item(key = "chained") { ChainedBlurSection(radius, Modifier.fillMaxWidth()) }
-                item(key = "backdrop") { BackdropBlurSection(radius, Modifier.fillMaxWidth()) }
-                item(key = "window") { WindowBlurSection(radius, Modifier.fillMaxWidth()) }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
+            contentAlignment = Alignment.TopCenter,
+        ) {
+            Column(modifier = Modifier.widthIn(max = ContentMaxWidth)) {
+                BlurRadiusSlider(
+                    radius = radius,
+                    onRadiusChange = onRadiusChange,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                )
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    item(key = "capabilities") { BlurCapabilityBanner(Modifier.fillMaxWidth()) }
+                    item(key = "content") { ContentBlurSection(radius, Modifier.fillMaxWidth()) }
+                    item(key = "downscale") { DownscaleBlurSection(radius, Modifier.fillMaxWidth()) }
+                    item(key = "progressive") { ProgressiveBlurSection(radius, Modifier.fillMaxWidth()) }
+                    item(key = "agsl") { AgslProgressiveBlurSection(radius, Modifier.fillMaxWidth()) }
+                    item(key = "masked") { MaskedBlurSection(radius, Modifier.fillMaxWidth()) }
+                    item(key = "chained") { ChainedBlurSection(radius, Modifier.fillMaxWidth()) }
+                    item(key = "backdrop") { BackdropBlurSection(radius, Modifier.fillMaxWidth()) }
+                    item(key = "window") { WindowBlurSection(radius, Modifier.fillMaxWidth()) }
+                    item(key = "sheet") {
+                        SheetBlurSection(
+                            onOpenSheet = { onSheetVisibleChange(true) },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
             }
         }
     }
@@ -69,6 +90,11 @@ fun BlurLabContent(
 @Composable
 private fun BlurLabContentPreview() {
     AndroidExperimentalTheme {
-        BlurLabContent(radius = DefaultBlurRadius, onRadiusChange = {})
+        BlurLabContent(
+            radius = DefaultBlurRadius,
+            onRadiusChange = {},
+            sheetVisible = false,
+            onSheetVisibleChange = {},
+        )
     }
 }
